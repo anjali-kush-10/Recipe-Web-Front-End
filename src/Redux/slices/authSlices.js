@@ -13,7 +13,10 @@ const authSlice = createSlice({
       localStorage.setItem('token', action.payload);
     },
     clearToken: (state) => {
+      console.log(state,"stattettetettetetett");
+      
       state.token = null;
+      console.log(state.token);
       localStorage.removeItem('token');
     }
   }

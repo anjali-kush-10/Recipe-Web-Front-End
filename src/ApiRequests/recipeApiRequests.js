@@ -31,3 +31,23 @@ export const deleteRecipe=(token,id)=>{
         }
     });
 }
+
+
+export const updateRecipe=(payload,token,id)=>{
+    return axios.patch(`${apiUrl}/update-recipe/${id}`,payload,{
+        headers:{
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
+        }
+    });
+}
+
+
+export const readRecipe=(token,id)=>{
+    return axios.get(`${apiUrl}/read-recipe/${id}`,{
+        headers:{
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
+        }
+    });
+}

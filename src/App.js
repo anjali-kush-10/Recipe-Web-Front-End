@@ -8,6 +8,7 @@ import ViewAllRecipes from "./components/ViewAllRecipes";
 import ManageUsers from "./components/ManageUsers";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ViewSingleRecipe from "./components/ViewSingleRecipe";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/view-all-recipes" element={<ViewAllRecipes />} />
         <Route path="/manage-all-users" element={<ManageUsers />} />
+        <Route path="/view-recipe/:id" element={<ViewSingleRecipe />} />
       </Routes>
     </>
   );

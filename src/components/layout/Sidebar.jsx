@@ -7,45 +7,56 @@ import { RiToggleFill } from "react-icons/ri";
 import { FaToggleOff } from "react-icons/fa6";
 import { FaToggleOn } from "react-icons/fa6";
 import { jwtDecode } from 'jwt-decode';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearToken } from "../../Redux/slices/authSlices.js";
 
 const Sidebar = () => {
 
     const dispatch = useDispatch();
 
-    const authToken = localStorage.getItem('token');
+    // const authToken = localStorage.getItem('token');
     // console.log(authToken, "Sidebar authToken");
+
+    const authToken = useSelector(state => state.auth.token);
 
     let user = { name: '', role: '' };
 
-        if (authToken) {
-            try {
-                const decoded = jwtDecode(authToken);
-                // console.log("Decoded Token:", decoded);
+    if (authToken) {
+        try {
+            const decoded = jwtDecode(authToken);
+            // console.log("Decoded Token:", decoded);
 
-                user = {
-                    name: decoded.name || 'User',
-                    role: decoded.role || 'User',
-                };
-            } catch (err) {
-                console.error("Invalid token:", err);
-            }
+            user = {
+                name: decoded.name || 'User',
+                role: decoded.role || 'User',
+            };
+        } catch (err) {
+            console.error("Invalid token:", err);
         }
+    }
 
 
     const navigate = useNavigate();
 
+    // const handleLogout = () => {
+    //     dispatch(clearToken());
+    // };
+
     const handleLogout = () => {
+        console.log("Logout triggered");
         dispatch(clearToken());
+        localStorage.removeItem('token');
+        console.log("Token after removal:", localStorage.getItem('token')); // Should log null
+        navigate('/login');
     };
+
 
     return (
         <>
             <header className="tm-header" id="tm-header">
                 <div className="tm-header-wrapper">
                     <div className="tm-site-header">
-                        <div className="mb-3 mx-auto tm-site-logo"><TbChefHat /></div>
+                        <div className="mb-3 mx-auto tm-site-logo"><TbChefHat style={{ width: "50", height: "30" }} /></div>
                         <Link className="tm-nav-link" to="/"><h1 className="text-center">Recipe Hub</h1></Link>
                     </div>
                     <nav className="tm-nav" id="tm-nav">
@@ -69,23 +80,41 @@ const Sidebar = () => {
                                         Contact Us
                                     </a></li>
 
-                                    <li className="tm-nav-item">
+                                    {/* <li className="tm-nav-item">
                                         {
                                             authToken ?
-                                                <Link className="tm-nav-link" to="/login">  <RiLoginCircleFill
-                                                    style={{ marginRight: '37px' }}
-                                                    onClick={handleLogout}
-                                                />
+                                                <span className="tm-nav-link" onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                                                    <RiLoginCircleFill style={{ marginRight: '37px' }} />
                                                     Logout
-                                                </Link>
+                                                </span>
                                                 :
-                                                <Link className="tm-nav-link" to="/login">  <RiLoginCircleFill
+                                                <li className="tm-nav-item">  <RiLoginCircleFill
                                                     style={{ marginRight: '37px' }} />
                                                     Login
-                                                </Link>
+                                                </li>
                                         }
 
+                                    </li> */}
+
+
+                                    <li className="tm-nav-item">
+                                        {authToken ? (
+                                            <span
+                                                className="tm-nav-link"
+                                                onClick={handleLogout}
+                                                style={{ cursor: "pointer" }}
+                                            >
+                                                <RiLoginCircleFill style={{ marginRight: "37px" }} />
+                                                Logout
+                                            </span>
+                                        ) : (
+                                            <Link className="tm-nav-link" to="/login">
+                                                <RiLoginCircleFill style={{ marginRight: "37px" }} />
+                                                Login
+                                            </Link>
+                                        )}
                                     </li>
+
 
                                 </ul>
                                 : <ul>
